@@ -13,12 +13,15 @@
   default-bundle = "8.18";
 
   bundles."8.16" = {
+    coqPackages.coq.override.version = "8.16";
     coqPackages.hahn.override.version = "master";
   };
   bundles."8.17" = {
+    coqPackages.coq.override.version = "8.17";
     coqPackages.hahn.override.version = "master";
   };
   bundles."8.18" = {
+    coqPackages.coq.override.version = "8.18";
     coqPackages.hahn.override.version = "master";
   };
 
