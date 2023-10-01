@@ -48,46 +48,6 @@ Proof using.
   auto.
 Qed.
 
-Definition countP {A} (f: A -> Prop) (l : list A) :=
-  length (filterP f l).
-
-Add Parametric Morphism A : (@countP A) with signature
-    (@set_subset A) ==> eq ==> le as countP_mori.
-Proof using.
-  ins. unfold countP.
-  induction y0.
-  { simpls. }
-  ins. desf; simpls.
-  1,3: lia.
-  exfalso. apply n. by apply H.
-Qed.
-
-Add Parametric Morphism A : (@countP A) with signature
-    set_equiv ==> eq ==> eq as countP_more.
-Proof using.
-  ins. unfold countP.
-  erewrite filterP_set_equiv; eauto.
-Qed.
-
-Lemma countP_strict_mori {A} (e : A) l P P'
-      (IN : P ⊆₁ P')
-      (INP  : ~ P e)
-      (INP' :  P' e)
-      (INL  : In e l) :
-  countP P l < countP P' l.
-Proof using.
-  generalize dependent e.
-  induction l; simpls.
-  ins. desf.
-  { unfold countP; simpls. desf. simpls.
-    apply NPeano.Nat.lt_succ_r. by apply countP_mori. }
-  unfold countP; simpls. desf; simpls.
-  { apply NPeano.Nat.succ_lt_mono with (n:=length (filterP P l)). eapply IHl; eauto. }
-  { exfalso. apply n. by apply IN. }
-  { apply NPeano.Nat.lt_succ_r. by apply countP_mori. }
-  by apply IHl with (e:=e).
-Qed.
-
 Lemma false_acyclic {A} : acyclic (∅₂ : relation A).
 Proof using.
   red. rewrite ct_of_trans; [|apply transitiveI].

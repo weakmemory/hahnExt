@@ -357,6 +357,15 @@ Proof using.
   apply union_more; [done | by apply seq_restr_fwcl].
 Qed.
 
+Lemma map_rel_restr_eq_dom {A B} (f g : A -> B) s r (EQ : eq_dom s f g) :
+  restr_rel s (f ↓ r) ≡ restr_rel s (g ↓ r).
+Proof using.
+  unfolder.
+  split.
+  { ins. desf. rewrite <- !EQ; auto. }
+  ins. desf. rewrite !EQ; auto.
+Qed.
+
 (******************************************************************************)
 (** ** TODO: move? *)
 (******************************************************************************)

@@ -294,3 +294,128 @@ Proof using.
   ins. red in H; desc.
   apply le_new_antisymm; by apply set_size_mori.
 Qed.
+
+(* TODO: rename and move *)
+Lemma exists_not_subset {A} (s q : A -> Prop) (NIN : ~ q ⊆₁ s) :
+  exists a, q a /\ ~ s a.
+Proof using.
+  unfold set_subset in *.
+  apply not_all_ex_not in NIN. desf.
+  exists n.
+  apply NNPP. intros HH.
+  apply NIN. intros AA.
+  exfalso. apply HH. split; auto.
+Qed.
+
+(* TODO: move *)
+Lemma app_eq_unit2 {A} (x y : list A) (a b : A)
+      (EQ : x ++ y = [a; b]) :
+  x = [] /\ y = [a; b] \/
+  x = [a] /\ y = [b] \/
+  x = [a; b] /\ y = [].
+Proof using.
+  destruct x; simpls; eauto.
+  inv EQ.
+  apply app_eq_unit in H0. desf; eauto.
+Qed.
+
+(* TODO: move *)
+Lemma filterP_all_in {A} (l : list A) (f : A -> Prop) (NIN : forall a (IN : In a l), f a) :
+  filterP f l = l.
+Proof using.
+  induction l; ins.
+  desf.
+  { rewrite IHl; auto. }
+  exfalso. intuition.
+Qed.
+
+(* TODO: move *)
+Lemma length_filterP_elem_NoDup {A} (l : list A) (NDUP : NoDup l) (a : A) (IN : In a l) :
+  length l = 1 + (length (filterP (fun x => x <> a) l)).
+Proof using.
+  generalize dependent a.
+  induction l; ins.
+  f_equal.
+  inv NDUP.
+  desf.
+  { rewrite filterP_all_in; auto.
+    ins. intro; subst.
+    apply nodup_cons in NDUP. desf. }
+  { rewrite IHl with (a:=a0); auto. }
+  exfalso.
+  assert (a = a0); desf.
+  now apply NNPP.
+Qed.
+
+Lemma set_size_fin_lt {A} (s q : A -> Prop) a b
+  (SS : set_size s = NOnum a)
+  (SQ : set_size q = NOnum b)
+  (IN : s ⊆₁ q)
+  (DF : ~ q ⊆₁ s) :
+  a < b.
+Proof using.
+  assert (set_finite s /\ set_finite q) as [FS FQ].
+  { split; apply set_size_finite; eauto. }
+  destruct (set_finite_precise_list FS) as [ls AA].
+  destruct (set_finite_precise_list FQ) as [lq BB].
+  desf.
+  assert (a = length ls); subst.
+  { rewrite SS in SIZE0. inv SIZE0. }
+  assert (b = length lq); subst.
+  { rewrite SQ in SIZE. inv SIZE. }
+  
+  assert (forall a, In a ls -> In a lq) as INCL.
+  { ins. apply IN0. apply IN. now apply IN1. }
+  assert (exists a, ~ In a ls /\ In a lq) as NEQ.
+  { edestruct (exists_not_subset DF) as [a [QA NSA]].
+    exists a. split.
+    2: now apply IN0.
+    intros HH. apply NSA. now apply IN1. }
+
+  clear dependent s.
+  clear dependent q.
+  (* TODO: make a lemma *)
+  generalize dependent lq.
+  induction ls; ins; desf.
+  { destruct lq; desf; ins. lia. }
+  rewrite length_filterP_elem_NoDup with (l:=lq) (a:=a0); auto; ins.
+  apply Arith_prebase.lt_n_S_stt.
+  apply IHls; auto.
+  { inv UNDUP0. }
+  { ins. apply in_filterP_iff. split; auto.
+    intro; subst.
+    intuition. }
+  exists a.
+  split.
+  { now eapply nodup_cons. }
+  apply in_filterP_iff. split; auto.
+Qed.
+
+Lemma choose_from_inf_set_size {A} (s : A -> Prop)
+  (INF : set_size s = NOinfinity) :
+  exists x s',
+    << NS   : ~ s' x >> /\
+    << EQS  : s' ≡₁ s \₁ eq x >> /\
+    << INFN : set_size s' = NOinfinity >>.
+Proof using.
+  enough (exists x s',
+             << NS   : ~ s' x >> /\
+             << EQS  : s' ≡₁ s \₁ eq x >>).
+  { desf. do 2 eexists. splits; eauto.
+    unfold set_size in *. desf.
+    exfalso. red in s0.
+    desf. apply n.
+    exists (x::findom). ins.
+    enough (s ⊆₁ s' ∪₁ eq x) as AA.
+    { apply AA in IN. red in IN. desf; auto. }
+    rewrite EQS. clear. unfolder. ins. tauto. }
+  unfold set_size in *.
+  desf. clear INF.
+  unfold set_finite in *.
+  apply NNPP. intros HH.
+  apply n. clear n.
+  exists []. ins. 
+  apply HH. exists x. exists (s \₁ eq x).
+  splits; auto.
+  clear. unfolder. ins. tauto.
+Qed.
