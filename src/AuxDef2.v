@@ -198,7 +198,7 @@ Proof using.
   generalize dependent m.
   induction l; intros m HH; ins; desf.
   { lia. }
-  apply NPeano.Nat.lt_eq_cases in HH. desf.
+  apply PeanoNat.Nat.lt_eq_cases in HH. desf.
   2: { eexists; eauto. }
   edestruct IHl as [a' AA]; eauto.
   lia.

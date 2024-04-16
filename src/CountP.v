@@ -33,11 +33,11 @@ Proof using.
   induction l; simpls.
   ins. desf.
   { unfold countP; simpls. desf. simpls.
-    apply NPeano.Nat.lt_succ_r. by apply countP_mori. }
+    apply PeanoNat.Nat.lt_succ_r. by apply countP_mori. }
   unfold countP; simpls. desf; simpls.
-  { apply NPeano.Nat.succ_lt_mono with (n:=length (filterP P l)). eapply IHl; eauto. }
+  { apply PeanoNat.Nat.succ_lt_mono with (n:=length (filterP P l)). eapply IHl; eauto. }
   { exfalso. apply n. by apply IN. }
-  { apply NPeano.Nat.lt_succ_r. by apply countP_mori. }
+  { apply PeanoNat.Nat.lt_succ_r. by apply countP_mori. }
   by apply IHl with (e:=e).
 Qed.
 
@@ -70,11 +70,11 @@ Proof using.
   induction n.
   { ins. lia. }
   ins. fold countNatP in *.
-  apply NPeano.Nat.lt_succ_r with (m:=n) in LE.
+  apply PeanoNat.Nat.lt_succ_r with (m:=n) in LE.
   destruct LE as [|m].
-  { desf; ins. apply NPeano.Nat.lt_succ_r.
+  { desf; ins. apply PeanoNat.Nat.lt_succ_r.
     eapply countNatP_mori; auto. }
-  apply NPeano.Nat.add_le_lt_mono.
+  apply PeanoNat.Nat.add_le_lt_mono.
   2: { eapply IHn; eauto. lia. }
   destruct (excluded_middle_informative (s (S m))) as [SS|SS].
   2: lia.
@@ -104,7 +104,7 @@ Proof using.
     unfold countNatP.
     destruct (excluded_middle_informative (s n)) as [HH | nHH].
     { ins; lia. }
-    rewrite NPeano.Nat.add_0_l.
+    rewrite PeanoNat.Nat.add_0_l.
     intros HH m Sm.
     eapply IHn in HH; eauto.
     destruct HH; intuition auto with *. }
@@ -114,7 +114,7 @@ Proof using.
   unfold countNatP.
   destruct (excluded_middle_informative (s n)) as [HH | nHH].
   { specialize (Hm n). intuition auto with *. }
-  rewrite NPeano.Nat.add_0_l.
+  rewrite PeanoNat.Nat.add_0_l.
   apply IHn.
   intros m Sm.
   specialize (Hm m).
@@ -129,8 +129,8 @@ Proof using.
   { arewrite (countNatP (eq m) n = 0); [|lia].
     eapply countNatP_zero.
     intuition auto with *. }
-  rewrite NPeano.Nat.add_0_l.
-  rewrite NPeano.Nat.lt_succ_r in LT.
+  rewrite PeanoNat.Nat.add_0_l.
+  rewrite PeanoNat.Nat.lt_succ_r in LT.
   destruct LT; intuition auto with *.
 Qed.
 
@@ -158,7 +158,7 @@ Proof using.
   generalize dependent m.
   induction n; ins.
   { lia. }
-  apply NPeano.Nat.lt_eq_cases in LT. desf; simpls.
+  apply PeanoNat.Nat.lt_eq_cases in LT. desf; simpls.
   2: { apply IHn; auto. lia. }
   all: exfalso; apply HH in s0; lia.
 Qed.

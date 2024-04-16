@@ -20,7 +20,7 @@ Proof using.
   generalize dependent l.
   pattern ll. apply Wf_nat.lt_wf_ind.
   clear ll. intros ll LIND; ins.
-  destruct (NPeano.Nat.eq_dec (length l) 0) as [|NEQ].
+  destruct (PeanoNat.Nat.eq_dec (length l) 0) as [|NEQ].
   { destruct l; ins. exfalso. eapply HH; eauto. }
   set (ls := List.seq 0 (length l)).
   destruct (in_dec EQA (f (length l)) (map f ls)) as [IN|NAI].

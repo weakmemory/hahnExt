@@ -42,8 +42,8 @@ Proof using.
   ins. 
   destruct l eqn:LL.
   { ins. lia. }
-  specialize_full IHl; [done| ]. rewrite <- LL in *. clear LL.  
-  destruct (NPeano.Nat.max_spec_le a (list_max l)); desc.
+  specialize_full IHl; [done| ]. rewrite <- LL in *. clear LL.
+  destruct (PeanoNat.Nat.max_spec_le a (list_max l)); desc.
   { rewrite H0. by right. }
   auto.
 Qed.
@@ -241,7 +241,7 @@ Proof using.
   ins. induction n.
   { unfold Q. ins. inv H. apply HPi. ins. inv H0. }
   unfold Q in *. ins.
-  apply NPeano.Nat.lt_eq_cases in H.
+  apply PeanoNat.Nat.lt_eq_cases in H.
   destruct H as [Hl | Heq].
   { unfold lt in Hl. apply le_S_n in Hl. by apply IHn. }
   rewrite Heq. apply HPi. ins.

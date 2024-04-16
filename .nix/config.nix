@@ -10,7 +10,7 @@
   ## If not specified, it defaults to "_CoqProject"
   # coqproject = "_CoqProject";
 
-  default-bundle = "8.18";
+  default-bundle = "8.19";
 
   bundles."8.16" = {
     coqPackages.coq.override.version = "8.16";
@@ -22,6 +22,10 @@
   };
   bundles."8.18" = {
     coqPackages.coq.override.version = "8.18";
+    coqPackages.hahn.override.version = "master";
+  };
+  bundles."8.19" = {
+    coqPackages.coq.override.version = "8.19";
     coqPackages.hahn.override.version = "master";
   };
 

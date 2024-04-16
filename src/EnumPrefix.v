@@ -86,7 +86,7 @@ Proof using RESP ENUM R_DOM.
   apply IND in Dj, Di. desc. rename i1 into j.
   assert (i0 = i) as -> by (apply INJ; auto; congruence).
   subst. 
-  pose proof (NPeano.Nat.lt_total i j) as LT. des; revgoals. 
+  pose proof (PeanoNat.Nat.lt_total i j) as LT. des; revgoals. 
   { left. red. vauto. }
   { subst. basic_solver. }
   (* TODO: is the last tactic needed? *)

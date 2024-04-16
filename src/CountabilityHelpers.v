@@ -64,7 +64,7 @@ Proof using.
   destruct constructive_indefinite_description as [lb LB].
   simpl in *. rewrite !filterP_set_full. 
   
-  apply NPeano.Nat.le_antisymm.
+  apply PeanoNat.Nat.le_antisymm.
   { eapply isomorphism_dom_len_helper; eauto. }
   apply isomorphism_sym in ISO. eapply isomorphism_dom_len_helper; eauto.
 Qed.
@@ -142,11 +142,11 @@ Proof using.
     exists (2 * i). rewrite <- Nat.add_0_l at 1. rewrite Nat.even_add_mul_2.
     simpl. f_equal. fold (2 * i). by rewrite Nat.div2_double. }
   apply enumeratesE' in CNTB. desc. specialize (IND b I). desc.
-  exists (2 * i + 1). rewrite NPeano.Nat.add_comm at 1. 
+  exists (2 * i + 1). rewrite PeanoNat.Nat.add_comm at 1. 
   rewrite <- Nat.add_0_l at 1.
   rewrite Nat.add_assoc. rewrite Nat.even_add_mul_2. 
   simpl. f_equal. fold (2 * i).
-  by rewrite Nat.add_1_r, NPeano.Nat.div2_succ_double. 
+  by rewrite Nat.add_1_r, PeanoNat.Nat.div2_succ_double. 
 Qed.
 
 

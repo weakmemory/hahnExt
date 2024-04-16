@@ -379,7 +379,7 @@ Proof using.
   induction ls; ins; desf.
   { destruct lq; desf; ins. lia. }
   rewrite length_filterP_elem_NoDup with (l:=lq) (a:=a0); auto; ins.
-  apply Arith_prebase.lt_n_S_stt.
+  apply Nat.succ_lt_mono with (n:=length ls).
   apply IHls; auto.
   { inv UNDUP0. }
   { ins. apply in_filterP_iff. split; auto.

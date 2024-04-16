@@ -16,7 +16,7 @@ Proof using.
   intros. induction d. 
   { simpl. rewrite PeanoNat.Nat.add_0_r. vauto. }
   eexists. split; eauto.
-  rewrite NPeano.Nat.add_succ_r, <- NPeano.Nat.add_1_r.
+  rewrite PeanoNat.Nat.add_succ_r, <- PeanoNat.Nat.add_1_r.
   apply STEPS. 
 Qed.   
   
@@ -26,7 +26,7 @@ Lemma enum_steps (r : relation A)
 Proof using.
   red. ins. apply PeanoNat.Nat.le_exists_sub in LT. desc. subst j.
   apply ctEE. exists p. split; auto.
-  rewrite NPeano.Nat.add_comm, PeanoNat.Nat.add_succ_comm.
+  rewrite PeanoNat.Nat.add_comm, PeanoNat.Nat.add_succ_comm.
   apply enum_exact_steps. auto. 
 Qed.
 
@@ -35,7 +35,7 @@ Lemma enum_steps_crt (r : relation A) b
   forall i j (LE : i <= j) (DOM : NOmega.le (NOnum j) b), r^* (f i) (f j).
 Proof using.
   destruct b; ins.
-  { apply NPeano.Nat.lt_eq_cases in LE as [LT | ]; subst.
+  { apply PeanoNat.Nat.lt_eq_cases in LE as [LT | ]; subst.
     2: now apply rt_refl.
     apply inclusion_t_rt. eapply enum_steps; auto. }
   generalize dependent j.
@@ -43,13 +43,13 @@ Proof using.
   { assert (i = 0) by lia; subst.
     assert (j = 0) by lia; subst.
     apply rt_refl. }
-  apply NPeano.Nat.lt_eq_cases in DOM as [LT | ]; subst.
+  apply PeanoNat.Nat.lt_eq_cases in DOM as [LT | ]; subst.
   { apply IHn; auto. lia. }
-  apply NPeano.Nat.lt_eq_cases in LE as [LT | ]; subst; vauto.
+  apply PeanoNat.Nat.lt_eq_cases in LE as [LT | ]; subst; vauto.
   eapply rt_unit. exists (f n). split.
   { eapply IHn; auto. lia. }
   specialize (STEPS n).
-  rewrite NPeano.Nat.add_comm in STEPS.
+  rewrite PeanoNat.Nat.add_comm in STEPS.
   apply STEPS. lia.
 Qed.
 
@@ -59,7 +59,7 @@ Lemma enum_inj (r : relation A)
   forall x y, f x = f y -> x = y. 
 Proof using. 
   ins. forward eapply enum_steps as STEPS'; eauto.
-  pose proof (NPeano.Nat.lt_trichotomy x y) as LT.
+  pose proof (PeanoNat.Nat.lt_trichotomy x y) as LT.
   des; auto;
     destruct (AC (f x)); [rewrite H at 2| rewrite H at 1]; 
     specialize (STEPS' _ _ LT); auto.
@@ -176,7 +176,7 @@ Proof using.
   forward eapply orders_contradiction with (r1 := r^+) (r2 := r') (S := S ∩₁ (f ↑₁ set_full)).  
   2: { eapply is_total_mori; eauto; [red| ]; basic_solver. }
   { red. ins. unfolder in IWa. unfolder in IWb. desc. subst. rename y0 into x.
-    pose proof (NPeano.Nat.lt_trichotomy x y). 
+    pose proof (PeanoNat.Nat.lt_trichotomy x y). 
     desf; [right | left].
     all: eapply enum_steps_inv; eauto. }
 
